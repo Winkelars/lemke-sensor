@@ -12,6 +12,7 @@ services:
       - DOCKER_INFLUXDB_INIT_PASSWORD=supersecurepassword
       - DOCKER_INFLUXDB_INIT_ORG=NiNiLa
       - DOCKER_INFLUXDB_INIT_BUCKET=my_bucket
+    restart: always
   python:
     build:
       context: ./python
@@ -28,7 +29,7 @@ services:
       - MAC_ADDRESSES=A4:C1:38:5C:A1:0B,
     privileged: true 
     network_mode: "host"
-    restart: unless-stopped
+    restart: always
 
 volumes:
   influxdb_data:
