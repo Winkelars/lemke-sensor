@@ -20,6 +20,7 @@ services:
     depends_on:
       - influxdb
     environment:
+      - PYTHONUNBUFFERED=1
       - INFLUXDB_URL=http://raspberrypi:8086
       - INFLUXDB_TOKEN=aHt2RtdJ0ndn3aAT3zS34UBz-ZOnSgvf9ovbCO7Jq_L7qTgztFnsTWsJQW9sS7hiye-VycXHhdGu411mBcJ4rQ==
       - INFLUXDB_ORG=NiNiLa
