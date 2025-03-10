@@ -1,0 +1,34 @@
+services:
+  influxdb:
+    image: influxdb:latest
+    container_name: influx-compose
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=supersecurepassword
+      - DOCKER_INFLUXDB_INIT_ORG=NiNiLa
+      - DOCKER_INFLUXDB_INIT_BUCKET=my_bucket
+  python:
+    build:
+      context: ./python
+      dockerfile: Dockerfile
+    container_name: python-compose
+    depends_on:
+      - influxdb
+    environment:
+      - INFLUXDB_URL=http://raspberrypi:8086
+      - INFLUXDB_TOKEN=aHt2RtdJ0ndn3aAT3zS34UBz-ZOnSgvf9ovbCO7Jq_L7qTgztFnsTWsJQW9sS7hiye-VycXHhdGu411mBcJ4rQ==
+      - INFLUXDB_ORG=NiNiLa
+      - INFLUXDB_BUCKET=SensorDatenbank
+      - MAC_ADDRESSES=A4:C1:38:5C:A1:0B,
+    privileged: true 
+    network_mode: "host"
+    restart: unless-stopped
+
+volumes:
+  influxdb_data:
+    external: true
