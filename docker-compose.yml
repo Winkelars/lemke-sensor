@@ -21,7 +21,7 @@ services:
     depends_on:
       - influxdb
     environment:
-      - GO_API_URL=http://raspberrypi:1337
+      - GO_API_URL=http://raspberrypi:8080
       - PYTHONUNBUFFERED=1
       - INFLUXDB_URL=http://raspberrypi:8086
       - INFLUXDB_TOKEN=aHt2RtdJ0ndn3aAT3zS34UBz-ZOnSgvf9ovbCO7Jq_L7qTgztFnsTWsJQW9sS7hiye-VycXHhdGu411mBcJ4rQ==
@@ -39,9 +39,10 @@ services:
     depends_on:
       - python
     environment:
-      - GO_API_URL=http://raspberrypi:1337
+      - GO_API_URL=http://raspberrypi:8080
+      - TOKEN=7612419128:AAFRI6XBulQlHn-wLTpGX6ksXNN2U6OquWc
     ports:
-      - "1337:1337"
+      - "8080:8080"
     volumes:
       - ./golang:/app
     working_dir: /app

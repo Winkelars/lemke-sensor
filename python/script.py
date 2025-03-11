@@ -61,7 +61,7 @@ def sensor_loop():
     while running:
         try:
             temperature, humidity, battery = sensorClient.temperature, sensorClient.humidity, sensorClient.battery
-            logging.info(f"🌡️ Temperatur: {temperature:.1f}℃, 💧 Luftfeuchtigkeit: {humidity:.1f}%, 🔋 Spannung: {battery:.1f}")
+            logging.info(f"\n🌡️ Temperatur: {temperature:.1f}℃ \n💧 Luftfeuchtigkeit: {humidity:.1f}% \n🔋 Spannung: {battery:.1f}")
 
             point = (
                 Point("sensor_data")
