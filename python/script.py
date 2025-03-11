@@ -2,14 +2,32 @@ import logging
 import signal
 import os
 import time
+import requests
+
 from influxdb_client import InfluxDBClient, Point
 from lywsd03mmc import Lywsd03mmcClient
 
-# 🔹 Logging-Konfiguration
+
+
+# 🔹 Logging-Konfiguration mit API-Post
+Golang_API_URL = "http://localhost:8080/log"
+def send_log(record):
+    try:
+        requests.post(Golang_API_URL, json={"message": record})
+    except requests.exceptions.RequestException as e:
+        print(f"Fehler beim Senden des Logs: {e}")
+
+api_loghandler = logging.Handler()
+api_loghandler.emit = lambda record: send_log(api_loghandler.format(record))
+
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
-    handlers=[logging.StreamHandler()]
+    handlers=[
+        logging.StreamHandler(),
+        api_loghandler
+    ]
 )
 
 # 🔹 InfluxDB Konfiguration
@@ -43,7 +61,7 @@ def sensor_loop():
     while running:
         try:
             temperature, humidity, battery = sensorClient.temperature, sensorClient.humidity, sensorClient.battery
-            logging.info(f"🌡️ Temperatur: {temperature:.1f}°C, 💧 Luftfeuchtigkeit: {humidity:.1f}%, 🔋 Batterie: {battery}%")
+            logging.info(f"🌡️ Temperatur: {temperature:.1f}℃, 💧 Luftfeuchtigkeit: {humidity:.1f}%, 🔋 Spannung: {battery:.1f}")
 
             point = (
                 Point("sensor_data")
@@ -67,3 +85,5 @@ logging.info("🛑 Datenlogger gestoppt. Schließe Verbindungen...")
 influxClient.close()
 logging.info("✅ Skript erfolgreich beendet.")
 
+logger = logging.getLogger()
+logger.info("Test test log log")

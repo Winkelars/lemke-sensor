@@ -21,6 +21,7 @@ services:
     depends_on:
       - influxdb
     environment:
+      - GO_API_URL=http://raspberrypi:1337
       - PYTHONUNBUFFERED=1
       - INFLUXDB_URL=http://raspberrypi:8086
       - INFLUXDB_TOKEN=aHt2RtdJ0ndn3aAT3zS34UBz-ZOnSgvf9ovbCO7Jq_L7qTgztFnsTWsJQW9sS7hiye-VycXHhdGu411mBcJ4rQ==
@@ -29,6 +30,21 @@ services:
       - MAC_ADDRESSES=A4:C1:38:5C:A1:0B,
     privileged: true 
     network_mode: "host"
+    restart: always
+  golang:
+    build:
+      context: ./golang
+      dockerfile: Dockerfile
+    container_name: golang-compose
+    depends_on:
+      - python
+    environment:
+      - GO_API_URL=http://raspberrypi:1337
+    ports:
+      - "1337:1337"
+    volumes:
+      - ./golang:/app
+    working_dir: /app
     restart: always
 
 volumes:
