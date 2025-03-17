@@ -88,7 +88,7 @@ func unsubscribe(bot *gotgbot.Bot, ctx *ext.Context) error {
 	delete(subscribedUsers.ids, userID)
 	subscribedUsers.Unlock()
 
-	_, err := ctx.EffectiveMessage.Reply(bot, "Du hast dich erfolgreich von Benachrichtigungen abgemeldet!", nil)
+	_, err := ctx.EffectiveMessage.Reply(bot, "Du hast dich erfolgreich von Benachrichtigungen abgemeldet!\n\nNutze /subscribe falls du wieder Benachrichtigungen erhalten möchtest.", nil)
 	fmt.Printf("Nutzer %d hat sich abgemeldet\n", userID)
 	return err
 }
